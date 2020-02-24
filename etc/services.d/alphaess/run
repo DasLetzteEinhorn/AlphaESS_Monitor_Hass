@@ -1,0 +1,10 @@
+#!/usr/bin/with-contenv bashio
+# ==============================================================================
+# Home Assistant Community Add-on: AlphaESS Monitoring
+# Runs AlphaESS Monitoring
+# ==============================================================================
+
+
+bashio::log.info "Starting AlphaESS Monitor"
+
+python3 /usr/bin/__init__.py
