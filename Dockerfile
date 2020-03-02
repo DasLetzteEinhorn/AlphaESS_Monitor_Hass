@@ -1,4 +1,4 @@
-ARG BUILD_FROM=hassioaddons/base:7.0.0
+ARG BUILD_FROM=hassioaddons/base:7.0.2
 # hadolint ignore=DL3006
 FROM ${BUILD_FROM}
 
@@ -8,20 +8,20 @@ COPY rootfs /
 # Setup base
 RUN apk add --no-cache \
     coreutils=8.31-r0 \
-    wget=1.20.3-r0
+    wget=1.20.3-r0 \
+    chromium=79.0.3945.130-r0 \
+    chromium-chromedriver=79.0.3945.130-r0
 
-RUN apt-get update
-# RUN apt-get install software-properties-common -y
-# RUN add-apt-repository ppa:canonical-chromium-builds/stage -y
-# RUN apt-get update
-# RUN apt-get install chromium-browser -y
-RUN apt-get install chromium-chromedriver -y
+RUN apk add --no-cache python3
+
+RUN pip3 install selenium
+RUN pip3 install paho-mqtt
 
 # Build arguments
 ARG BUILD_ARCH
 ARG BUILD_DATE
 ARG BUILD_REF
-ARG BUILD_VERSION
+ARG BUILD_VERSION=0.0.4
 
 # Labels
 LABEL \
@@ -34,7 +34,7 @@ LABEL \
     org.label-schema.description="AlphaESS Monitor add-on by DasLetzteEinhorn" \
     org.label-schema.build-date=${BUILD_DATE} \
     org.label-schema.name="AlphaESS Monitor" \
-    org.label-schema.schema-version="0.0.1" \
+    org.label-schema.schema-version="1.0" \
     org.label-schema.url="https://addons.community" \
     org.label-schema.usage="https://github.com/hassio-addons/addon-example/tree/master/README.md" \
     org.label-schema.vcs-ref=${BUILD_REF} \

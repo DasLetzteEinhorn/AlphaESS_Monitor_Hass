@@ -1,0 +1,18 @@
+#!/usr/bin/with-contenv bashio
+# ==============================================================================
+# Home Assistant Community Add-on: AlphaESS Monitoring
+# Runs AlphaESS Monitoring
+# ==============================================================================
+
+bashio::log.info "Starting AlphaESS Monitor"
+
+USERNAME=$(bashio::config 'username')
+PASSWORD=$(bashio::config 'password')
+TIMEOUT=$(bashio::config 'timeout')
+BASE_TOPIC=$(bashio::config 'base_topic')
+
+MQTT_HOST=$(bashio::services mqtt "host")
+MQTT_USER=$(bashio::services mqtt "username")
+MQTT_PASSWORD=$(bashio::services mqtt "password")
+
+python3 /usr/bin/__init__.py "$USERNAME" "$PASSWORD" "$MQTT_HOST" "$MQTT_USER" "$MQTT_PASSWORD" "$BASE_TOPIC" "$TIMEOUT"

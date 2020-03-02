@@ -1,0 +1,36 @@
+{
+  "name": "AlphaESS Monitor",
+  "version": "0.0.4",
+  "slug": "alphaess_monitor",
+  "description": "AlphaESS Monitor add-on by DasLetzteEinhorn",
+  "url": "http://localhost",
+  "startup": "application",
+  "arch": [
+    "aarch64",
+    "amd64",
+    "armhf",
+    "armv7",
+    "i386"
+  ],
+  "boot": "auto",
+  "hassio_api": true,
+  "homeassistant_api": true,
+  "hassio_role": "default",
+  "services": [
+    "mqtt:need"
+  ],
+  "options": {
+    "log_level": "info",
+    "base_topic": "alphaess",
+    "timeout": 60,
+    "username": "",
+    "password": ""
+  },
+  "schema": {
+    "log_level": "list(trace|debug|info|notice|warning|error|fatal)",
+    "username": "str",
+    "password": "password",
+    "base_topic": "str",
+    "timeout": "int"
+  }
+}
