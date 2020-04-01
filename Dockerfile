@@ -21,22 +21,22 @@ RUN pip3 install paho-mqtt
 ARG BUILD_ARCH
 ARG BUILD_DATE
 ARG BUILD_REF
-ARG BUILD_VERSION=0.0.4
+ARG BUILD_VERSION=0.0.11
 
 # Labels
 LABEL \
     io.hass.name="AlphaESS Monitor" \
-    io.hass.description="AlphaESS Monitor add-on by DasLetzteEinhorn" \
+    io.hass.description="AlphaESS Monitor add-on by MarioCake" \
     io.hass.arch="${BUILD_ARCH}" \
     io.hass.type="addon" \
     io.hass.version=${BUILD_VERSION} \
-    maintainer="DasLetzteEinhorn <jo.fritsche@gmail.com>" \
-    org.label-schema.description="AlphaESS Monitor add-on by DasLetzteEinhorn" \
+    maintainer="MarioCake <davidleinweber@web.de>" \
+    org.label-schema.description="AlphaESS Monitor add-on by MarioCake" \
     org.label-schema.build-date=${BUILD_DATE} \
     org.label-schema.name="AlphaESS Monitor" \
     org.label-schema.schema-version="1.0" \
     org.label-schema.url="https://addons.community" \
-    org.label-schema.usage="https://github.com/hassio-addons/addon-example/tree/master/README.md" \
+    org.label-schema.usage="https://github.com/DasLetzteEinhorn/AlphaESS_Monitor_Hass/README.md" \
     org.label-schema.vcs-ref=${BUILD_REF} \
-    org.label-schema.vcs-url="https://github.com/hassio-addons/addon-example" \
-    org.label-schema.vendor="DasLetzeEinhorn"
+    org.label-schema.vcs-url="https://github.com/DasLetzteEinhorn/AlphaESS_Monitor_Hass" \
+    org.label-schema.vendor="MarioCake"

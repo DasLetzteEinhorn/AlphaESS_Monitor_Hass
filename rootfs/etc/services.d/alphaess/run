@@ -10,9 +10,25 @@ USERNAME=$(bashio::config 'username')
 PASSWORD=$(bashio::config 'password')
 TIMEOUT=$(bashio::config 'timeout')
 BASE_TOPIC=$(bashio::config 'base_topic')
+LOG_LEVEL=$(bashio::config 'log_level')
 
-MQTT_HOST=$(bashio::services mqtt "host")
-MQTT_USER=$(bashio::services mqtt "username")
-MQTT_PASSWORD=$(bashio::services mqtt "password")
+MQTT_HOST=$(bashio::config 'mqtt_host')
+MQTT_USER=$(bashio::config 'mqtt_username')
+MQTT_PASSWORD=$(bashio::config 'mqtt_password')
+MQTT_PORT=$(bashio::config 'mqtt_port')
 
-python3 /usr/bin/__init__.py "$USERNAME" "$PASSWORD" "$MQTT_HOST" "$MQTT_USER" "$MQTT_PASSWORD" "$BASE_TOPIC" "$TIMEOUT"
+
+if [ "$MQTT_HOST" == "null" ] || [ "$MQTT_USER" == "null"  ] || [ "$MQTT_PASSWORD" == "null"  ]
+then
+  MQTT_HOST=$(bashio::services mqtt "host")
+  MQTT_USER=$(bashio::services mqtt "username")
+  MQTT_PASSWORD=$(bashio::services mqtt "password")
+  MQTT_PORT=$(bashio::services mqtt "port")
+fi
+
+if [ "$MQTT_PORT" == "null" ]
+then
+  MQTT_PORT=1883
+fi
+
+python3 /usr/bin/__init__.py "$USERNAME" "$PASSWORD" "$MQTT_HOST" "$MQTT_PORT" "$MQTT_USER" "$MQTT_PASSWORD" "$BASE_TOPIC" "$TIMEOUT" "$LOG_LEVEL"

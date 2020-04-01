@@ -1,8 +1,8 @@
 {
   "name": "AlphaESS Monitor",
-  "version": "0.0.4",
+  "version": "0.0.11",
   "slug": "alphaess_monitor",
-  "description": "AlphaESS Monitor add-on by DasLetzteEinhorn",
+  "description": "AlphaESS Monitor add-on by MarioCake",
   "url": "http://localhost",
   "startup": "application",
   "arch": [
@@ -31,6 +31,10 @@
     "username": "str",
     "password": "password",
     "base_topic": "str",
-    "timeout": "int"
+    "timeout": "int",
+    "mqtt_host": "str?",
+    "mqtt_port": "int?",
+    "mqtt_username": "str?",
+    "mqtt_password": "password?"
   }
 }
