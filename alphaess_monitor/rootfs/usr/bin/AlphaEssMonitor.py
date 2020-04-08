@@ -47,7 +47,7 @@ class AlphaEssMonitor():
         gridchartcontainerId = 'gridchartcontainer'
 
         self.driver.refresh()
-        WebDriverWait(self.driver, 10000).until(
+        WebDriverWait(self.driver, 15000).until(
             expected_conditions.visibility_of_element_located((By.LINK_TEXT, "Power Diagram")))
         sleep(10)
         self.driver.find_element(By.LINK_TEXT, "Power Diagram").click()
@@ -64,5 +64,5 @@ class AlphaEssMonitor():
     def get_value(self, id):
         WebDriverWait(self.driver, 5000).until(
             expected_conditions.presence_of_element_located((By.CSS_SELECTOR, "#" + id + " span")))
-        sleep(1)
+        sleep(2)
         return float(re.sub("%|kW", "", self.driver.find_element_by_css_selector("#" + id + " span").text))
