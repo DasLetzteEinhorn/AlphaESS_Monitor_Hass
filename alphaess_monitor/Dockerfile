@@ -6,11 +6,11 @@ FROM ${BUILD_FROM}
 COPY rootfs /
 
 # Setup base
-RUN apk add --no-cache \
-    coreutils=8.31-r0 \
-    wget=1.20.3-r0 \
-    chromium=79.0.3945.130-r0 \
-    chromium-chromedriver=79.0.3945.130-r0
+RUN apk add --no-cache
+RUN apk add coreutils=8.31-r0
+RUN apk add wget=1.20.3-r0
+RUN apk add chromium=79.0.3945.130-r0
+RUN apk add chromium-chromedriver=79.0.3945.130-r0
 
 RUN apk add --no-cache python3
 
