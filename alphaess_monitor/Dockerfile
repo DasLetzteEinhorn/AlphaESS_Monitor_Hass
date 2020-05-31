@@ -9,8 +9,8 @@ COPY rootfs /
 RUN apk add --no-cache \
     coreutils=8.31-r0 \
     wget=1.20.3-r0 \
-    chromium=83.0.4103.39 \
-    chromium-chromedriver=83.0.4103.39
+    chromium=79.0.3945.130-r0 \
+    chromium-chromedriver=79.0.3945.130-r0
 
 RUN apk add --no-cache python3
 
