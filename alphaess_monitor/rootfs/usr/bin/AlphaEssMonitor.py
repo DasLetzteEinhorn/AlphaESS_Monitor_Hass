@@ -27,9 +27,9 @@ class AlphaEssMonitor():
         self.started = True
         self.driver.get(self.host)
         self.driver.set_window_size(968, 1030)
-        self.driver.find_element(By.ID, "txtUserName").send_keys(self.user_name)
-        self.driver.find_element(By.ID, "txtUserPWD").send_keys(self.password)
-        self.driver.find_element(By.ID, "Login").click()
+        self.driver.find_element(By.CSS_SELECTOR, ".el-form-item:nth-child(2) .el-input__inner").send_keys(self.user_name)
+        self.driver.find_element(By.CSS_SELECTOR, ".el-form-item:nth-child(3) .el-input__inner").send_keys(self.password)
+        self.driver.find_element(By.CSS_SELECTOR, ".el-button--primary").click()
         self.user_name = None
         self.password = None
 
@@ -40,17 +40,17 @@ class AlphaEssMonitor():
         self.started = False
 
     def get_data(self):
-        pvchartcontainerId = 'pvchartcontainer'
-        loadchartcontainerId = 'loadchartcontainer'
-        batterychartcontainerId = 'batterychartcontainer'
-        feedinchartcontainerId = 'feedinchartcontainer'
-        gridchartcontainerId = 'gridchartcontainer'
+        pvchartcontainerId = '1'
+        loadchartcontainerId = '2'
+        batterychartcontainerId = '3'
+        feedinchartcontainerId = '4'
+        gridchartcontainerId = '5'
 
         self.driver.refresh()
         WebDriverWait(self.driver, 15000).until(
-            expected_conditions.visibility_of_element_located((By.LINK_TEXT, "Power Diagram")))
+            expected_conditions.visibility_of_element_located((By.ID, "tab-2")))
         sleep(10)
-        self.driver.find_element(By.LINK_TEXT, "Power Diagram").click()
+        self.driver.find_element(By.ID, "tab-2").click()
         sleep(10)
 
         return {
@@ -63,6 +63,6 @@ class AlphaEssMonitor():
 
     def get_value(self, id):
         WebDriverWait(self.driver, 5000).until(
-            expected_conditions.presence_of_element_located((By.CSS_SELECTOR, "#" + id + " span")))
+            expected_conditions.presence_of_element_located((By.CSS_SELECTOR, ".pie-data-container > :nth-child("+id+") tspan")))
         sleep(2)
-        return float(re.sub("%|kW", "", self.driver.find_element_by_css_selector("#" + id + " span").text))
+        return float(re.sub("%|kW", "", self.driver.find_element_by_css_selector(".pie-data-container > :nth-child("+id+") tspan").text))
