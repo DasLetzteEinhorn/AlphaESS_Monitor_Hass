@@ -1,4 +1,4 @@
-ARG BUILD_FROM=hassioaddons/base:7.0.2
+ARG BUILD_FROM=hassioaddons/base:7.2.0
 # hadolint ignore=DL3006
 FROM ${BUILD_FROM}
 
@@ -21,7 +21,7 @@ RUN pip3 install paho-mqtt
 ARG BUILD_ARCH
 ARG BUILD_DATE
 ARG BUILD_REF
-ARG BUILD_VERSION=0.0.13
+ARG BUILD_VERSION=0.0.14
 
 # Labels
 LABEL \
