@@ -7,7 +7,7 @@ COPY rootfs /
 
 # Setup base
 RUN apk add --no-cache
-RUN apk add coreutils=8.31-r0
+RUN apk add coreutils=8.32-r0
 RUN apk add wget=1.20.3-r0
 RUN apk add chromium=81.0.4044.113-r0
 RUN apk add chromium-chromedriver=81.0.4044.113-r0
