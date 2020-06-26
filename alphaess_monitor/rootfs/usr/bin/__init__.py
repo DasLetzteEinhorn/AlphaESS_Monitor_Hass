@@ -57,6 +57,7 @@ if __name__ == '__main__':
 
     while True:
         monitor_data = monitor.get_data()
+        logger.log_debug("load = %s" % monitor_data["load"])
         if monitor_data["load"] and monitor_data["load"] != 0:
             for key in monitor_data:
                 logger.log_debug("Monitor data key: %s" % key)
