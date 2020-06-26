@@ -57,7 +57,7 @@ if __name__ == '__main__':
 
     while True:
         monitor_data = monitor.get_data()
-        if monitor_data["load"] && monitor_data["load"] == 0:
+        if monitor_data["load"] and monitor_data["load"] == 0:
             for key in monitor_data:
                 logger.log_debug("Monitor data key: %s" % key)
                 mqtt_client.publish(base_topic + "/" + key, monitor_data[key])
