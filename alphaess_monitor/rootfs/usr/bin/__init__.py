@@ -42,7 +42,9 @@ if __name__ == '__main__':
     selectedLogLevel = logLevelMap[sys.argv[9]]
 
     logger = Logger(selectedLogLevel)
-
+    
+    logger.log_debug("logger created")
+    
     monitor = AlphaEssMonitor(user_name, password)
     monitor.start(driver)
     mqtt_client = mqtt.Client()
