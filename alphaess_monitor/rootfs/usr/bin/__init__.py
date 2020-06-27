@@ -55,6 +55,7 @@ if __name__ == '__main__':
     mqtt_password = None
     mqtt_username = None
 
+    logger.log_debug("start while loop")
     while True:
         monitor_data = monitor.get_data()
         logger.log_debug("load = %s" % monitor_data["load"])
