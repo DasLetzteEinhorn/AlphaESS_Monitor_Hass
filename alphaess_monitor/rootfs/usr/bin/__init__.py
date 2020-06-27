@@ -61,8 +61,8 @@ if __name__ == '__main__':
     while True:
         monitor_data = monitor.get_data()
         for key in monitor_data:
-            logger.log_debug("Monitor data key: %s" % key)
+            logger.log_debug("Monitor data key: %s".format(key))
             mqtt_client.publish(base_topic + "/" + key, monitor_data[key])
-        logger.log_debug("Waiting %d seconds" % timeout)
+        logger.log_debug("Waiting %d seconds".format(timeout))
         sleep(timeout)
 
