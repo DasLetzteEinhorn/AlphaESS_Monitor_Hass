@@ -11,6 +11,7 @@ PASSWORD=$(bashio::config 'password')
 TIMEOUT=$(bashio::config 'timeout')
 BASE_TOPIC=$(bashio::config 'base_topic')
 LOG_LEVEL=$(bashio::config 'log_level')
+SERIAL_NUMBERS=$(bashio::config 'serial_numbers')
 
 MQTT_HOST=$(bashio::config 'mqtt_host')
 MQTT_USER=$(bashio::config 'mqtt_username')
@@ -31,4 +32,4 @@ then
   MQTT_PORT=1883
 fi
 
-python3 /usr/bin/__init__.py "$USERNAME" "$PASSWORD" "$MQTT_HOST" "$MQTT_PORT" "$MQTT_USER" "$MQTT_PASSWORD" "$BASE_TOPIC" "$TIMEOUT" "$LOG_LEVEL"
+python3 /usr/bin/__init__.py "$USERNAME" "$PASSWORD" "$MQTT_HOST" "$MQTT_PORT" "$MQTT_USER" "$MQTT_PASSWORD" "$BASE_TOPIC" "$TIMEOUT" "$LOG_LEVEL" "$SERIAL_NUMBERS"
