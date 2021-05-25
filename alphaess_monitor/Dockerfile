@@ -10,7 +10,7 @@ SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 COPY rootfs /
 
 # Setup base
-RUN apt-get install python3 python3-pip -y
+RUN apt-get update && apt-get install python3=3.7.3-1 python3-pip=18.1-5 -y
 
 RUN pip3 install requests
 RUN pip3 install paho-mqtt
