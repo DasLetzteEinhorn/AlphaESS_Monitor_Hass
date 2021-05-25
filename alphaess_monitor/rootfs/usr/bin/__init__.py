@@ -1,5 +1,4 @@
-from selenium import webdriver
-from selenium.webdriver.chrome.options import Options
+import json
 import paho.mqtt.client as mqtt
 import logging
 from time import sleep
@@ -12,7 +11,6 @@ from logger import (
 )
 from AlphaEssMonitor import AlphaEssMonitor
 
-
 logLevelMap = {
     "trace": LogLevels["Trace"],
     "debug": LogLevels["Debug"],
@@ -24,13 +22,6 @@ logLevelMap = {
 }
 
 if __name__ == '__main__':
-    chrome_options = Options()
-    chrome_options.add_argument('--headless')
-    chrome_options.add_argument('--no-sandbox')
-    chrome_options.add_argument('--disable-dev-shm-usage')
-    chrome_options.binary_location = shutil.which("chromium-browser")
-    driver = webdriver.Chrome(options=chrome_options, executable_path=shutil.which("chromedriver"))
-
     user_name = sys.argv[1]
     password = sys.argv[2]
     mqtt_host = sys.argv[3]
@@ -41,12 +32,19 @@ if __name__ == '__main__':
     timeout = int(sys.argv[8])
     selectedLogLevel = logLevelMap[sys.argv[9]]
 
+    if sys.argv[10] == "":
+        serial_numbers = []
+    else:
+        serial_numbers = list(map(lambda number: number.strip(), sys.argv[10].split(",")))
+
+    print(json.dumps("".split(",")))
+
     logger = Logger(selectedLogLevel)
     
     logger.log_debug("logger created")
     
-    monitor = AlphaEssMonitor(user_name, password)
-    monitor.start(driver)
+    monitor = AlphaEssMonitor(user_name, password, logger, serial_numbers)
+    monitor.start()
     mqtt_client = mqtt.Client()
     mqtt_client.username_pw_set(mqtt_username, mqtt_password)
     mqtt_client.connect(host=mqtt_host, port=mqtt_port)
@@ -61,8 +59,8 @@ if __name__ == '__main__':
     while True:
         monitor_data = monitor.get_data()
         for key in monitor_data:
-            logger.log_debug("Monitor data key: %s".format(key))
+            logger.log_debug("Monitor data key: {key}\t\t{data}".format(key = key, data = monitor_data[key]))
             mqtt_client.publish(base_topic + "/" + key, monitor_data[key])
-        logger.log_debug("Waiting %d seconds".format(timeout))
-        sleep(timeout)
+        logger.log_debug("Waiting {timeout} seconds".format(timeout = timeout))
 
+        sleep(timeout)

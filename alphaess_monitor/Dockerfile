@@ -1,27 +1,25 @@
-ARG BUILD_FROM=hassioaddons/base:7.2.0
+ARG BUILD_FROM=ghcr.io/hassio-addons/debian-base/amd64:4.2.1
+
 # hadolint ignore=DL3006
 FROM ${BUILD_FROM}
+
+# Set shell
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
 # Copy root filesystem
 COPY rootfs /
 
 # Setup base
-RUN apk add --no-cache
-RUN apk add coreutils=8.31-r0
-RUN apk add wget=1.20.3-r0
-RUN apk add chromium=81.0.4044.113-r0
-RUN apk add chromium-chromedriver=81.0.4044.113-r0
+RUN apt-get update && apt-get install python3=3.7.3-1 python3-pip=18.1-5 -y
 
-RUN apk add --no-cache python3
-
-RUN pip3 install selenium
+RUN pip3 install requests
 RUN pip3 install paho-mqtt
 
 # Build arguments
 ARG BUILD_ARCH
 ARG BUILD_DATE
 ARG BUILD_REF
-ARG BUILD_VERSION=0.0.17
+ARG BUILD_VERSION=0.1.1
 
 # Labels
 LABEL \
@@ -35,7 +33,7 @@ LABEL \
     org.label-schema.build-date=${BUILD_DATE} \
     org.label-schema.name="AlphaESS Monitor" \
     org.label-schema.schema-version="1.0" \
-    org.label-schema.url="https://addons.community" \
+    org.label-schema.url="https://github.com/DasLetzteEinhorn/AlphaESS_Monitor_Hass" \
     org.label-schema.usage="https://github.com/DasLetzteEinhorn/AlphaESS_Monitor_Hass/README.md" \
     org.label-schema.vcs-ref=${BUILD_REF} \
     org.label-schema.vcs-url="https://github.com/DasLetzteEinhorn/AlphaESS_Monitor_Hass" \
