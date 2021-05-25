@@ -10,8 +10,7 @@ SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 COPY rootfs /
 
 # Setup base
-RUN apk add --no-cache
-RUN apk add --no-cache python3
+RUN apt get python3 python3-pip -y
 
 RUN pip3 install requests
 RUN pip3 install paho-mqtt
