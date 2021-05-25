@@ -1,6 +1,6 @@
 {
   "name": "AlphaESS Monitor",
-  "version": "0.0.17",
+  "version": "0.1.0",
   "slug": "alphaess_monitor",
   "description": "AlphaESS Monitor add-on by MarioCake",
   "url": "http://localhost",
@@ -30,6 +30,7 @@
     "log_level": "list(trace|debug|info|notice|warning|error|fatal)",
     "username": "str",
     "password": "password",
+    "serial_numbers": "str?",
     "base_topic": "str",
     "timeout": "int",
     "mqtt_host": "str?",

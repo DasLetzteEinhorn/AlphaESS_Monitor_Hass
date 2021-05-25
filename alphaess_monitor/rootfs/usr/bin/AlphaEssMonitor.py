@@ -1,9 +1,8 @@
-import re
-from time import sleep
+import re as regex
+import time
+import json
 
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support import expected_conditions
-from selenium.webdriver.support.wait import WebDriverWait
+import requests
 
 from const import (
     DEFAULT_HOST
@@ -11,58 +10,121 @@ from const import (
 
 
 class AlphaEssMonitor():
-    def __init__(self, user_name, password, host=DEFAULT_HOST):
+    def __init__(self, user_name, password, logger, serial_numbers=[], host=DEFAULT_HOST):
         self.user_name = user_name
         self.password = password
         self.host = host
-        self.started = False
-        self.driver = None
+        self.logger = logger
+        self.serial_numbers = serial_numbers
+        self.init()
 
-    def start(self, driver):
-        if self.started:
-            return
-
-        self.driver = driver
-
-        self.started = True
-        self.driver.get(self.host)
-        self.driver.set_window_size(968, 1030)
-        self.driver.find_element(By.CSS_SELECTOR, ".el-form-item:nth-child(2) .el-input__inner").send_keys(self.user_name)
-        self.driver.find_element(By.CSS_SELECTOR, ".el-form-item:nth-child(3) .el-input__inner").send_keys(self.password)
-        self.driver.find_element(By.CSS_SELECTOR, ".el-button--primary").click()
-        self.user_name = None
-        self.password = None
-
+    def start(self):
+        self.logger.log_debug("Starting monitor")
+        self.login()
+        
     def stop(self):
-        self.driver.get(self.host + "/Account/Logout")
-        self.driver.quit()
-        self.driver = None
-        self.started = False
+        self.logger.log_debug("Stopping monitor")
+        self.init()
+        
+    def init(self):
+        self.expiration_time = 0
+        self.auth_token = None
+        self.refresh_token = None
+        self.expiration_buffer = 0
 
     def get_data(self):
-        pvchartcontainerId = '1'
-        loadchartcontainerId = '2'
-        batterychartcontainerId = '3'
-        feedinchartcontainerId = '4'
-        gridchartcontainerId = '5'
+        if self.expiration_time < self.get_current_time() + self.expiration_buffer: # todo: get offset from config?
+            if not self.login():
+                return None
 
-        self.driver.refresh()
-        WebDriverWait(self.driver, 15000).until(
-            expected_conditions.visibility_of_element_located((By.ID, "tab-2")))
-        sleep(10)
-        self.driver.find_element(By.ID, "tab-2").click()
-        sleep(10)
+        serial_numbers = self.get_serial_numbers()
 
-        return {
-            'pv': self.get_value(pvchartcontainerId),
-            'load': self.get_value(loadchartcontainerId),
-            'battery': self.get_value(batterychartcontainerId),
-            'feed_in': self.get_value(feedinchartcontainerId),
-            'grid_consumption': self.get_value(gridchartcontainerId)
+        data = {}
+
+        for serial_number in serial_numbers:
+            self.logger.log_trace("Get data for serial number " + serial_number)
+
+            response = requests.get(self.host + "/api/ESS/GetSecondDataBySn?noLoading=true&sys_sn=" + serial_number, headers=self.get_headers())
+            if self.handle_error_status_code(response):
+                return
+            data[serial_number] = json.dumps(response.json()["data"])
+
+        return data
+
+    def handle_error_status_code(self, response):
+        self.logger.log_trace("Handle error for response. StatusCode: " + str(response.status_code) + ", Reason: " + response.text)
+
+        status_code = response.status_code
+        if status_code == 200:
+            status_code = response.json()["code"]
+            if status_code == 200:
+                return False
+
+        self.logger.log_error("No successful request. StatusCode: " + str(status_code) + ", Reason: " + response.text)        
+
+        switcher = {
+            401: self.handle_forbidden,
+            403: self.handle_forbidden
         }
 
-    def get_value(self, id):
-        WebDriverWait(self.driver, 5000).until(
-            expected_conditions.presence_of_element_located((By.CSS_SELECTOR, ".pie-data-container > :nth-child("+id+") tspan")))
-        sleep(2)
-        return float(re.sub("%|kW", "", self.driver.find_element_by_css_selector(".pie-data-container > :nth-child("+id+") tspan").text))
+        handler = switcher.get(status_code)
+        handler(response)
+
+        return True
+
+    def handle_forbidden(self):
+        self.init()
+
+    def get_serial_numbers(self):
+        self.logger.log_trace("Try get serial numbers. Cached: " + json.dumps(self.serial_numbers))
+
+        if self.serial_numbers is not None and len(self.serial_numbers) != 0:
+            return self.serial_numbers
+
+        serial_numbers_response = requests.get(self.host + "/api/Account/GetCustomMenuESSlist", headers=self.get_headers())
+
+        if self.handle_error_status_code(serial_numbers_response):
+            return []
+
+        self.serial_numbers = list(map(lambda serial_number_obj: serial_number_obj["sys_sn"], serial_numbers_response.json()["data"]))
+        return self.serial_numbers
+
+    def login(self):
+        if self.expiration_time > self.get_current_time():
+            self.logger.log_trace("Try login with refresh token")
+
+            refresh_data = {
+                'userName': self.user_name,
+                'accessToken': self.auth_token,
+                'refreshTokenKey': self.refresh_token
+            }
+            login_response = requests.post(self.host + "/api/Account/RefreshToken", headers=self.get_headers(), json=refresh_data)
+        else:
+            self.logger.log_trace("Try login with credentials")
+
+            credentials = {
+                'username': self.user_name, 
+                'password': self.password
+            }
+            login_response = requests.post(self.host + "/api/Account/Login", headers=self.get_headers(), json=credentials)
+
+        if self.handle_error_status_code(login_response):
+            self.logger.log_error("Unable to login with status code " + login_response.status_code + ", Reason: " + login_response.reason)
+            return False
+
+        login_response = login_response.json()["data"]
+        self.expiration_time = login_response["ExpiresIn"] + self.get_current_time()
+        self.auth_token = login_response["AccessToken"]
+        self.refresh_token = login_response["RefreshTokenKey"]
+        self.expiration_buffer = login_response["ExpiresIn"] * 0.1
+
+        return True
+
+    def get_current_time(self):
+        return int(time.time())
+
+    def get_headers(self):
+        if self.auth_token is None:
+            return {'Content-Type':'application/json'}
+
+        return { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + self.auth_token }
