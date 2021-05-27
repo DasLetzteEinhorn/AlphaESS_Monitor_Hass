@@ -23,4 +23,4 @@ jobs:
       with:
         args: |
           --all \
-          --target master/AlphaESS_Monitor_Hass
+          --target master/alphaess_monitor
