@@ -1,9 +1,9 @@
 {
-  "name": "AlphaESS Monitor",
+  "name": "Alpha ESS to MQTT",
   "version": "0.1.1",
   "slug": "alphaess_monitor",
-  "description": "AlphaESS Monitor add-on by MarioCake",
-  "url": "http://localhost",
+  "description": "Alpha ESS to MQTT add-on by MarioCake",
+  "url": "https://github.com/DasLetzteEinhorn/AlphaESS_Monitor_Hass",
   "startup": "application",
   "arch": [
     "aarch64",
