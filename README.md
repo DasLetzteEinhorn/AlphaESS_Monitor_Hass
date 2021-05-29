@@ -24,7 +24,7 @@ username: <your username>
 password: <your password>
 ```
 
-By default, the addon connects to your Home Assistant's broker (Mosquitto), on which the addon is installed. If the broker is installed somewhere else, the following settings must be added:
+By default, the addon connects to your Home Assistant's broker (e.g. [Mosquitto](https://github.com/home-assistant/addons/blob/master/mosquitto/DOCS.md)), on which the addon is installed. If the broker is installed somewhere else, the following settings must be added:
 
 ```yaml
 mqtt_host: <your host>
@@ -42,6 +42,8 @@ serial_numbers:
   - <serial number 1>
   - <serial number 2>
 ```
+
+To get your specific serial numbers you can either look them up in the Alpha ESS Dashboard or extract them from the first mqtt responses if you already configured and started the addon correctly.
 
 Currently the addon only delivers all available metrics. Maybe we add the automatic creation of sensors in the future. For now, I use the following package (please refer to  [Packages Documentation](https://www.home-assistant.io/docs/configuration/packages/)):
 
@@ -149,7 +151,9 @@ The received data should look something like this:
 </details>
 
 ## Notes
-If you have any suggestions, found some bugs or simply need help with this addon, feel free to [open an issue](https://github.com/DasLetzteEinhorn/AlphaESS_Monitor_Hass/issues/new).
+Until we figure out how to create the image with github actions, the addon needs to be built on your machine. If you reading this know anything about this, help is appreciated :)
+  
+  If you have any suggestions, found some bugs or simply need help with this addon, feel free to [open an issue](https://github.com/DasLetzteEinhorn/AlphaESS_Monitor_Hass/issues/new).
 
 # Credits
 Almost the entire code comes from the brain and fingers of [MarioCakeDev](https://github.com/MarioCakeDev). If you like this addon, you can leave him a small [donation](http://paypal.me/DavidPayLein).
