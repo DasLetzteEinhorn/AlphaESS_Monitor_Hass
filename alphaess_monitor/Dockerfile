@@ -1,4 +1,4 @@
-ARG BUILD_FROM=ghcr.io/hassio-addons/debian-base/amd64:6.0.0
+ARG BUILD_FROM=ghcr.io/hassio-addons/debian-base/amd64:4.2.1
 
 # hadolint ignore=DL3006
 FROM ${BUILD_FROM}
@@ -10,7 +10,7 @@ SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 COPY rootfs /
 
 # Setup base
-RUN apt-get update && apt-get install python3=3.9.2-3 -y
+RUN apt-get update && apt-get install python3=3.7.3-1 python3-pip=18.1-5 -y
 
 RUN pip3 install requests
 RUN pip3 install paho-mqtt
@@ -19,7 +19,7 @@ RUN pip3 install paho-mqtt
 ARG BUILD_ARCH
 ARG BUILD_DATE
 ARG BUILD_REF
-ARG BUILD_VERSION=0.1.3
+ARG BUILD_VERSION=0.1.4
 
 # Labels
 LABEL \
