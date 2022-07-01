@@ -1,1 +1,1 @@
-DEFAULT_HOST = "https://www.alphaess.com/"
+DEFAULT_HOST = "https://cloud.alphaess.com/"

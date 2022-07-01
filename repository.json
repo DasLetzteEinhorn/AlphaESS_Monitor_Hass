@@ -1,5 +1,5 @@
 {
-  "name": "Alpha ESS to MQTT",
-  "url": "https://github.com/DasLetzteEinhorn/AlphaESS_Monitor_Hass",
-  "maintainer": "MarioCake <davidleinweber@web.de>"
+    "name": "Alpha ESS to MQTT",
+    "url": "https://github.com/DasLetzteEinhorn/AlphaESS_Monitor_Hass",
+    "maintainer": "MarioCake <davidleinweber@web.de>"
 }
