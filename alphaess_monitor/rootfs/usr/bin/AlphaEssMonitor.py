@@ -44,7 +44,7 @@ class AlphaEssMonitor():
         for serial_number in serial_numbers:
             self.logger.log_trace("Get data for serial number " + serial_number)
 
-            response = requests.get(self.host + "/api/ESS/GetSecondDataBySn?noLoading=true&sys_sn=" + serial_number, headers=self.get_headers())
+            response = requests.get(self.host + "/api/ESS/GetLastPowerDataBySN?noLoading=true&sys_sn=" + serial_number, headers=self.get_headers())
             if self.handle_error_status_code(response):
                 return
             data[serial_number] = json.dumps(response.json()["data"])
