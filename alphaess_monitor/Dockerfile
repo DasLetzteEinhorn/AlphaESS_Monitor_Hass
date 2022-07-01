@@ -10,8 +10,8 @@ SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 COPY rootfs /
 
 # Setup base
-RUN apt-get update && apt-get install python3=3.9.2-1 python3-pip=20.3.4-4 -y
-
+RUN apt-get update && apt-get install python3=3.9.2-3 -y
+RUN python3 get-pip.py
 RUN pip3 install requests
 RUN pip3 install paho-mqtt
 
@@ -19,7 +19,7 @@ RUN pip3 install paho-mqtt
 ARG BUILD_ARCH
 ARG BUILD_DATE
 ARG BUILD_REF
-ARG BUILD_VERSION=0.1.2
+ARG BUILD_VERSION=0.1.3
 
 # Labels
 LABEL \
