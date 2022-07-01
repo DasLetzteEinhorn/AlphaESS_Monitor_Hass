@@ -11,7 +11,7 @@ COPY rootfs /
 
 # Setup base
 RUN apt-get update && apt-get install python3=3.9.2-3 -y
-RUN python3 get-pip.py
+
 RUN pip3 install requests
 RUN pip3 install paho-mqtt
 
