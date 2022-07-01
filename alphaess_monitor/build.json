@@ -1,5 +1,6 @@
 {
   "squash": false,
+  "image": "alphaess_monitor/release",
   "build_from": {
     "aarch64": "ghcr.io/hassio-addons/debian-base/aarch64:4.2.1",
     "amd64": "ghcr.io/hassio-addons/debian-base/amd64:4.2.1",
