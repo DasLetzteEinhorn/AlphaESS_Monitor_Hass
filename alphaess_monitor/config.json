@@ -1,6 +1,6 @@
 {
     "name": "Alpha ESS to MQTT",
-    "version": "0.1.4",
+    "version": "0.1.5",
     "slug": "alphaess_monitor",
     "description": "Alpha ESS to MQTT add-on by MarioCake",
     "url": "https://github.com/DasLetzteEinhorn/AlphaESS_Monitor_Hass",
